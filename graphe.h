@@ -63,16 +63,12 @@ void Graphe<S>::ajouterAreteOrientee(const S& s1, const S& s2){
 
 template <class S>
 void Graphe<S>::parcoursRechercheProfondeur(const S& s) const{
-    // À compléter.
-    // Vous devrez implémenter des marqueurs «visité» sur les sommets.
 
     for(auto& sommet : this->sommets){
         sommet.second.visite = false;
     }
 
-
     parcoursRechercheProfondeur2(s);
-
     cout << endl;
 }
 
@@ -98,11 +94,38 @@ template<class S> void Graphe<S>::parcoursRechercheProfondeur2(const S& s) const
 
 template <class S>
 void Graphe<S>::parcoursRechercheLargueur(const S& s) const{
-    // À compléter.
-    // Vous devrez implémenter des marqueurs «visité» sur les sommets.
-    // Il est recommendé d'utiliser la file std::queue de la bibliothèque standard de C++.
-    // Voir : http://en.cppreference.com/w/cpp/container/queue
+
+    queue<S> file;
+    file.push(s);
+
+    for(auto& sommet : this->sommets){
+        sommet.second.visite = false;
+    }
+
+    while(!file.empty()){
+
+        cout << file.front() << " ";
+
+        const Sommet& sommet = this->sommets.at(file.front());
+        sommet.visite = true;
+        file.pop();
+
+        for(auto& voisin : sommet.voisins) {
+
+            const Sommet& sommet_voisin = this->sommets.at(voisin);
+
+            if(!sommet_voisin.visite){
+                sommet_voisin.visite = true;
+                file.push(voisin);  
+            } 
+            
+        }
+
+    }
+
+    cout << endl;
 }
+
 template <class S>
 void Graphe<S>::extraireCompostantesConnexes() const{
     // À compléter.
